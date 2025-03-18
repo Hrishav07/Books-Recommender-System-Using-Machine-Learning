@@ -1,14 +1,12 @@
-'''
-Author: Bappy Ahmed
-Email: entbappy73@gmail.com
-Date: 2021-Dec-18
-'''
-
 import pickle
 import streamlit as st
 import numpy as np
 
+import pandas as pd
+print(f"Pandas version: {pd.__version__}")
+books = pd.read_csv('data/BX-Books.csv', sep=";", on_bad_lines='skip', encoding='latin-1')
 
+users = pd.read_csv('data/BX-Users.csv', sep=";", on_bad_lines='skip', encoding='latin-1')
 st.header('Book Recommender System Using Machine Learning')
 model = pickle.load(open('artifacts/model.pkl','rb'))
 book_names = pickle.load(open('artifacts/book_names.pkl','rb'))
@@ -25,12 +23,20 @@ def fetch_poster(suggestion):
         book_name.append(book_pivot.index[book_id])
 
     for name in book_name[0]: 
-        ids = np.where(final_rating['title'] == name)[0][0]
-        ids_index.append(ids)
+        try:
+            ids = np.where(final_rating['Book-Title'] == name)[0][0]
+            ids_index.append(ids)
+        except IndexError:
+            print(f"Book not found: {name}")
+            continue
 
     for idx in ids_index:
-        url = final_rating.iloc[idx]['image_url']
-        poster_url.append(url)
+        try:
+            url = final_rating.iloc[idx]['Image-URL-L']
+            poster_url.append(url)
+        except IndexError:
+            print(f"Index out of range: {idx}")
+            continue
 
     return poster_url
 
@@ -59,19 +65,23 @@ selected_books = st.selectbox(
 if st.button('Show Recommendation'):
     recommended_books,poster_url = recommend_book(selected_books)
     col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        st.text(recommended_books[1])
-        st.image(poster_url[1])
-    with col2:
-        st.text(recommended_books[2])
-        st.image(poster_url[2])
+    try:
+        with col1:
+            st.text(recommended_books[1])
+            st.image(poster_url[1])
+        with col2:
+            st.text(recommended_books[2])
+            st.image(poster_url[2])
 
-    with col3:
-        st.text(recommended_books[3])
-        st.image(poster_url[3])
-    with col4:
-        st.text(recommended_books[4])
-        st.image(poster_url[4])
-    with col5:
-        st.text(recommended_books[5])
-        st.image(poster_url[5])
+        with col3:
+            st.text(recommended_books[3])
+            st.image(poster_url[3])
+        with col4:
+            st.text(recommended_books[4])
+            st.image(poster_url[4])
+        with col5:
+            st.text(recommended_books[5])
+            st.image(poster_url[5])
+    except IndexError as e:
+        print(f"IndexError in displaying recommendations: {e}")
+        st.write("Not enough recommendations found to display.")
