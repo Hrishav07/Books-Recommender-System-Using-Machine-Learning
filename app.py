@@ -7,7 +7,7 @@ print(f"Pandas version: {pd.__version__}")
 books = pd.read_csv('data/BX-Books.csv', sep=";", on_bad_lines='skip', encoding='latin-1')
 
 users = pd.read_csv('data/BX-Users.csv', sep=";", on_bad_lines='skip', encoding='latin-1')
-st.header('Book Recommender System Using Machine Learning')
+st.header('Your Pustak Anushansa Pranali')
 model = pickle.load(open('artifacts/model.pkl','rb'))
 book_names = pickle.load(open('artifacts/book_names.pkl','rb'))
 final_rating = pickle.load(open('artifacts/final_rating.pkl','rb'))
