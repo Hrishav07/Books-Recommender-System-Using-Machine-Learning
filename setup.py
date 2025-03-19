@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 REPO_NAME = "Books-Recommender-System-Using-Machine-Learning"
-AUTHOR_USER_NAME = "hrishav07"
+AUTHOR_USER_NAME = "Hrishav07"
 SRC_REPO = "src"
 LIST_OF_REQUIREMENTS = ['streamlit', 'numpy']
 
