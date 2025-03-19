@@ -113,7 +113,6 @@ pip install -r requirements.txt
 
 
 ```bash
-#run this file to generate the models
 
 Books Recommender.ipynb
 ```
@@ -130,5 +129,3 @@ Data Student
 Email: sharmahrishav12@gmail.com
 
 ```
-
-
